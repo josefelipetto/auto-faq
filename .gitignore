@@ -129,3 +129,4 @@ dmypy.json
 .pyre/
 resources/models/
 tfidf_logreg_en_faq.json
+.idea/

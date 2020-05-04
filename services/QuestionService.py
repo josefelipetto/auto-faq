@@ -10,3 +10,8 @@ class QuestionService:
 
     def get_questions(self) -> List:
         return list(self.db.bxquestions.find({}, {'_id': False}))
+
+    def answer_question(self, product_id, question, answer):
+        product = self.db.products.find({'id': product_id})
+        print(product.questions)
+

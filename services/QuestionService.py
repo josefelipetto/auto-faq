@@ -1,13 +1,13 @@
 from typing import List
 from pymongo import MongoClient
 from .FAQService import update_faq_model
-import csv
+import os
 
 
 class QuestionService:
     def __init__(self):
-        self.client = MongoClient('mongodb://josefelipetto:batera2020@ds123556.mlab.com:23556/tiagomongo?retryWrites'
-                                  '=false')
+        host = "ds123556.mlab.com:23556/tiagomongo?retryWrites=false"
+        self.client = MongoClient(f"mongodb://{os.getenv('MONGO_DB_USER')}:{os.getenv('MONGO_DB_PASSWORD')}@{host}")
         self.db = self.client.tiagomongo
 
     def get_questions(self) -> List:

@@ -16,6 +16,8 @@ class FAQService:
         self.faq = train_model(model_config)
 
     def get_answer(self, question: str) -> Dict:
+        self.train_model()
+
         faq_object = self.faq([question])
         answer = faq_object[0][0]
         similarities = faq_object[1][0]
@@ -24,3 +26,9 @@ class FAQService:
             'answer': answer,
             'similarities': similarities
         }
+
+    def try_answer(self, text):
+        faq_response = self.get_answer(text)
+        answer = faq_response['answer']
+        good_similarities = list(filter(lambda similarity: similarity > 0.6, faq_response['similarities']))
+        return dict(answer=answer, is_there_good_match=len(good_similarities) > 0)

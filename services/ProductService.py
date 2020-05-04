@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List
 from pymongo import MongoClient
 from .FAQService import FAQService
 

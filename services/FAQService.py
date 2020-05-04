@@ -13,8 +13,8 @@ def filter_question(question: str):
         .replace("boa noite", "") \
         .replace("boa tarde", "") \
         .replace("opa", "") \
-        .replace("Gente boa") \
-        .replace("gente boa")
+        .replace("Gente boa", "") \
+        .replace("gente boa", "")
 
 
 class FAQService:

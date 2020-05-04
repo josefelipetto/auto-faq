@@ -11,10 +11,10 @@ class ProductService:
         self.db = self.client.tiagomongo
 
     def get_products(self) -> List:
-        return list(self.db.products.find())
+        return list(self.db.products.find({}, {'_id': False}))
 
     def store_question(self, product_id: str, text: str, status: str):
-        self.store_at_db(product_id, text, status)
+        self.__store_at_db(product_id, text, status)
 
         faq = FAQService(f"resources/models/faq-{product_id}.csv")
         answer = faq.try_answer(text)
@@ -22,17 +22,17 @@ class ProductService:
         if answer['is_there_good_match']:
             return dict(found=True, answer=answer['answer'])
 
-        self.send_question_to_bx(product_id, text)
+        self.__send_question_to_bx(product_id, text)
 
         return dict(found=False, answer="Pergunta enviada ao BX")
 
-    def store_at_db(self, product_id, text, status):
+    def __store_at_db(self, product_id, text, status):
         self.db.products.find_one_and_update(
             {'id': product_id},
-            {'$push': {'questions': f"{{text: \"{text}\", status: \"{status}\", answer: \"null\"}}"}}
+            {'$push': {'questions': f"{{'text': '{text}', 'status': '{status}', 'answer': 'null'}}"}}
         )
 
-    def send_question_to_bx(self, product_id, text):
+    def __send_question_to_bx(self, product_id, text):
         self.db.bxquestions.insert_one({
             'product_id': product_id,
             'question': text

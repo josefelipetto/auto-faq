@@ -26,4 +26,14 @@ def get_bx_questions():
     return jsonify(question_service.get_questions())
 
 
+@app.route('/answer/<product_id>', methods=['POST'])
+def answer_pending_question(product_id):
+    question_service = QuestionService()
+    question = request.json['question']
+    answer = request.json['answer']
+
+    did_it_answer = question_service.answer_question(product_id=product_id, question=question, answer=answer)
+    return jsonify(dict(success=did_it_answer))
+
+
 app.run()

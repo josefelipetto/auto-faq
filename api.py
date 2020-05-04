@@ -3,18 +3,23 @@ from flask import Flask, jsonify, request
 from services.ProductService import ProductService
 from services.QuestionService import QuestionService
 from dotenv import load_dotenv
+from flask_cors import CORS, cross_origin
 
 load_dotenv()
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 @app.route('/products', methods=['GET'])
+@cross_origin()
 def get_products():
     product_service = ProductService()
     return jsonify(product_service.get_products())
 
 
 @app.route('/question/<product_id>', methods=['POST'])
+@cross_origin()
 def new_question(product_id):
     text = request.json['text']
     status = 'UNANSWERED'
@@ -23,12 +28,14 @@ def new_question(product_id):
 
 
 @app.route('/bxquestions', methods=['GET'])
+@cross_origin()
 def get_bx_questions():
     question_service = QuestionService()
     return jsonify(question_service.get_questions())
 
 
 @app.route('/answer/<product_id>', methods=['POST'])
+@cross_origin()
 def answer_pending_question(product_id):
     question_service = QuestionService()
     question = request.json['question']

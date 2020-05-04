@@ -1,6 +1,7 @@
 from typing import Dict
 from deeppavlov import train_model, configs
 from deeppavlov.core.common.file import read_json
+import csv
 
 
 # Basic question filter for MVP purposes
@@ -13,8 +14,14 @@ def filter_question(question: str):
         .replace("boa noite", "") \
         .replace("boa tarde", "") \
         .replace("opa", "") \
-        .replace("Gente boa") \
-        .replace("gente boa")
+        .replace("Gente boa", "") \
+        .replace("gente boa", "")
+
+
+def update_faq_model(product_id, question, answer):
+    with open(f"resources/models/faq-{product_id}.csv", 'a') as model:
+        writer = csv.writer(model)
+        writer.writerow((question, answer))
 
 
 class FAQService:

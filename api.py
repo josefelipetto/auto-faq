@@ -4,6 +4,7 @@ from services.ProductService import ProductService
 from services.QuestionService import QuestionService
 from dotenv import load_dotenv
 from flask_cors import CORS, cross_origin
+from bson.json_util import dumps
 
 load_dotenv()
 app = Flask(__name__)
@@ -43,6 +44,13 @@ def answer_pending_question(product_id):
 
     did_it_answer = question_service.answer_question(product_id=product_id, question=question, answer=answer)
     return jsonify(dict(success=did_it_answer))
+
+
+@app.route('/answers/<product_id>', methods=['GET'])
+@cross_origin()
+def get_product_answers(product_id):
+    question_service = QuestionService()
+    return jsonify(question_service.get_answers(product_id))
 
 
 app.run()

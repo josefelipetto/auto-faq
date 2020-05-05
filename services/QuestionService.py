@@ -40,3 +40,9 @@ class QuestionService:
                 'question': question
             }
         )
+
+    def get_answers(self, product_id):
+        questions = list(self.db.products.find({'id': product_id}, {'_id': False, 'questions': True}))[0]['questions']
+        questions = list(filter(lambda question: question['status'] == 'ANSWERED', questions))
+        return list(map(lambda question: question['answer'], questions))
+
